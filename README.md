@@ -30,7 +30,6 @@ Interactive tools with intelligent data fetching:
 - `generate_sdk_code` - TypeScript code examples for common operations
 - `calculate_verification_cost` - Cost comparison across blockchains
 
-
 ### **Compatibility**
 - ✅ Compatible with **Claude Desktop (Docker)**
 - ✅ Compatible with **Cursor (local Python)**
@@ -67,6 +66,20 @@ cd zkverify-mcp-server
 ---
 
 ## **A. Docker Setup (Claude Desktop)**
+
+### **Prerequisites**
+
+Before setting up the zkVerify MCP server for Claude Desktop, ensure you have:
+
+1. **Docker Desktop installed and running**
+   - Download from: https://www.docker.com/products/docker-desktop/
+
+2. **Docker MCP Toolkit enabled**
+   - Follow the official guide: https://docs.docker.com/ai/mcp-catalog-and-toolkit/toolkit/
+   - The MCP Toolkit must be enabled in Docker Desktop settings
+   - Verify by running: `docker mcp --version`
+
+> ⚠️ **Important**: Without Docker running and MCP Toolkit enabled, the server will not work with Claude Desktop.
 
 ### **Step 1: Build the Docker Image**
 
@@ -485,9 +498,12 @@ Contributions are welcome! Please:
 
 ## **Resources**
 
-- **Docker MCP Toolkit**: [Docker MCP Toolkit Documentation](https://docs.docker.com/ai/mcp-catalog-and-toolkit/toolkit/)
 - **zkVerify Official Docs**: https://docs.zkverify.io/
+- **zkVerify GitHub**: https://github.com/zkverify
+- **zkVerify Discord**: https://discord.gg/zkverify
 - **MCP Protocol**: https://modelcontextprotocol.io/
+- **Claude Desktop**: https://claude.ai/
+- **Cursor**: https://cursor.sh/
 
 ---
 
