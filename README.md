@@ -10,25 +10,34 @@ This project provides a **ready-to-use MCP server** for developers to integrate 
 
 ## **Features**
 
-### **Resources (9 total)**
+### **Resources (11 total)**
 Pre-configured resources with hybrid live/cached data:
 - `zkverify://overview` - Platform overview and key features
+- `zkverify://contract-addresses` - Contract addresses for all networks
+- `zkverify://supported-proofs` - Supported proof systems and capabilities
+- `zkverify://important-links` - Important links and external resources
+- `zkverify://tutorials` - Step-by-step tutorials
+- `zkverify://explorations` - Advanced use cases and explorations
+- `zkverify://testnet` - Testnet information and getting started
 - `zkverify://architecture` - Detailed architecture documentation
 - `zkverify://sdk` - SDK installation and usage
-- `zkverify://tutorials` - Step-by-step tutorials
-- `zkverify://api` - API reference
-- `zkverify://faq` - Frequently asked questions
-- `zkverify://contracts` - Smart contract integration
-- `zkverify://proofs` - Proof system details
-- `zkverify://vflow` - Verification workflow
+- `zkverify://relayer-mainnet` - Relayer API documentation (Mainnet)
+- `zkverify://relayer-testnet` - Relayer API documentation (Testnet)
 
-### **Tools (5 total)**
+### **Tools (12 total)**
 Interactive tools with intelligent data fetching:
 - `fetch_zkverify_docs` - Fetch live documentation from specific sections
-- `get_proof_system_info` - Detailed proof system information (Groth16, Fflonk, RISC Zero)
+- `get_proof_system_info` - Detailed proof system information (Groth16, Fflonk, RISC Zero, etc.)
 - `get_network_info` - Network details, RPC endpoints, explorer, and faucet
 - `generate_sdk_code` - TypeScript code examples for common operations
 - `calculate_verification_cost` - Cost comparison across blockchains
+- `get_tutorial_info` - Detailed tutorial information and guides
+- `get_exploration_info` - Advanced exploration details
+- `get_testnet_phases` - Incentivized testnet phases and challenges
+- `get_node_operator_guide` - Node operator setup and guides
+- `get_verifier_guide` - Custom verifier integration guides
+- `get_relayer_api_info` - Relayer API documentation and endpoints
+- `generate_relayer_example` - Relayer API code examples
 
 ### **Compatibility**
 - ✅ Compatible with **Claude Desktop (Docker)**
@@ -119,16 +128,25 @@ registry:
             - name: get_network_info
             - name: generate_sdk_code
             - name: calculate_verification_cost
+            - name: get_tutorial_info
+            - name: get_exploration_info
+            - name: get_testnet_phases
+            - name: get_node_operator_guide
+            - name: get_verifier_guide
+            - name: get_relayer_api_info
+            - name: generate_relayer_example
         resources:
             - name: "zkverify://overview"
+            - name: "zkverify://contract-addresses"
+            - name: "zkverify://supported-proofs"
+            - name: "zkverify://important-links"
+            - name: "zkverify://tutorials"
+            - name: "zkverify://explorations"
+            - name: "zkverify://testnet"
             - name: "zkverify://architecture"
             - name: "zkverify://sdk"
-            - name: "zkverify://tutorials"
-            - name: "zkverify://api"
-            - name: "zkverify://faq"
-            - name: "zkverify://contracts"
-            - name: "zkverify://proofs"
-            - name: "zkverify://vflow"
+            - name: "zkverify://relayer-mainnet"
+            - name: "zkverify://relayer-testnet"
         metadata:
             category: integration
             tags:
@@ -285,6 +303,14 @@ Show me how to submit a Groth16 proof using the SDK
 Calculate the cost savings for 100 proofs on zkVerify vs Ethereum
 
 What are the zkVerify testnet RPC endpoints?
+
+Show me the contract addresses for zkVerify
+
+How do I set up a node operator?
+
+What are the testnet phases and challenges?
+
+Generate a relayer API example for submitting proofs
 ```
 
 Or use tools explicitly:
@@ -295,6 +321,10 @@ Or use tools explicitly:
 @zkverify get_network_info testnet
 @zkverify generate_sdk_code submit_proof
 @zkverify calculate_verification_cost groth16 100
+@zkverify get_tutorial_info nextjs-circom
+@zkverify get_testnet_phases
+@zkverify get_node_operator_guide docker
+@zkverify generate_relayer_example submit-proof testnet
 ```
 
 ### **In Cursor**
@@ -310,6 +340,15 @@ Use the MCP tools in your code context:
 
 // Compare costs
 // @zkverify calculate_verification_cost fflonk 50
+
+// Get tutorial information
+// @zkverify get_tutorial_info typescript-example
+
+// Generate relayer code
+// @zkverify generate_relayer_example register-vk testnet
+
+// Get node operator guide
+// @zkverify get_node_operator_guide docker
 ```
 
 ---
@@ -324,6 +363,9 @@ In Claude Desktop, ask:
 @zkverify What proof systems does zkVerify support?
 @zkverify Show me the testnet RPC endpoints
 @zkverify Generate code to connect to zkVerify
+@zkverify Get contract addresses for zkVerify
+@zkverify Show me node operator guides
+@zkverify Get testnet phases information
 ```
 
 ### **Cursor Integration Test**
@@ -333,6 +375,8 @@ In Cursor, use:
 ```typescript
 // @zkverify generate_sdk_code submit_proof
 // @zkverify calculate_verification_cost groth16 10
+// @zkverify get_tutorial_info nextjs-circom
+// @zkverify generate_relayer_example submit-proof testnet
 ```
 
 ---
@@ -382,20 +426,27 @@ async def get_new_topic() -> str:
     content = await fetch_from_docs("https://docs.zkverify.io/new-topic")
     
     if content:
-        return f"# New Topic (Live)\n\n{content}"
+        logger.info("Successfully fetched live new topic")
+        return f"""# New Topic (Live from Docs)
+
+{content[:4000]}
+
+Source: https://docs.zkverify.io/new-topic
+Last fetched: Live data"""
     
     # Fallback
-    return """# New Topic (Cached)
-    
-    [Your cached content here]
-    
-    ⚠️ Using cached data."""
+    logger.warning("Failed to fetch new topic from docs")
+    return """❌ Unable to fetch new topic from documentation.
+
+Please visit https://docs.zkverify.io/new-topic directly for the latest information."""
 ```
 
-Update `custom.yaml`:
+Update `custom.yaml` (add to the resources list):
 
 ```yaml
 resources:
+    - name: "zkverify://overview"
+    # ... existing resources ...
     - name: "zkverify://new-topic"
 ```
 
@@ -407,9 +458,13 @@ Add to `zkverify_server.py`:
 @mcp.tool()
 async def new_tool(param: str = "") -> str:
     """Single-line description of what this tool does."""
-    logger.info(f"Executing new_tool with: {param}")
+    logger.info(f"Executing new_tool with param: {param}")
     
     try:
+        # Validate parameter
+        if not param:
+            return "❌ Error: Please provide a parameter"
+        
         # Try live fetch
         result = await fetch_live_data(param)
         if result:
@@ -419,14 +474,16 @@ async def new_tool(param: str = "") -> str:
         return fallback_data(param)
         
     except Exception as e:
-        logger.error(f"Error: {e}")
+        logger.error(f"Error in new_tool: {e}")
         return f"❌ Error: {str(e)}"
 ```
 
-Update `custom.yaml`:
+Update `custom.yaml` (add to the tools list):
 
 ```yaml
 tools:
+    - name: fetch_zkverify_docs
+    # ... existing tools ...
     - name: new_tool
 ```
 
@@ -522,6 +579,21 @@ For questions, issues, or suggestions, please open an issue on GitHub.
 ---
 
 ## **Changelog**
+
+### **v2.1.0** - Complete Feature Set
+- ✨ **11 resources** covering all zkVerify documentation
+- ✨ **12 interactive tools** for comprehensive zkVerify integration
+- ✨ Added contract addresses resource
+- ✨ Added supported proofs resource
+- ✨ Added important links resource
+- ✨ Added relayer API resources (mainnet & testnet)
+- ✨ Added tutorial info tool
+- ✨ Added exploration info tool
+- ✨ Added testnet phases tool
+- ✨ Added node operator guide tool
+- ✨ Added verifier integration guide tool
+- ✨ Added relayer API info tool
+- ✨ Added relayer example generation tool
 
 ### **v2.0.0** - Hybrid Data Mode
 - ✨ Added hybrid live/cached data fetching
